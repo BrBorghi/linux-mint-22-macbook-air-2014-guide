@@ -231,13 +231,14 @@ In 2026, test the default libinput driver first. Switch to synaptics only if mul
 
 - Configure the desired behavior:
 
-	```bash
-	sudo mkdir -p /etc/X11/xorg.conf.d
-	sudo nano /etc/X11/xorg.conf.d/70-synaptics.conf
-	```
-	Insert these lines (adapt to your needs):
-	
-	```text
+```
+sudo mkdir -p /etc/X11/xorg.conf.d
+sudo nano /etc/X11/xorg.conf.d/70-synaptics.conf
+```
+
+Insert these lines (adapt to your needs):
+
+```
 Section "InputClass"
     Identifier "Apple Trackpad"
     MatchProduct "bcm5974"
@@ -256,6 +257,7 @@ Section "InputClass"
     Option "TapAndDragGesture" "on"
     Option "LockedDrags" "off"
 EndSection
+```
 
 ### Backlit keyboard
 
