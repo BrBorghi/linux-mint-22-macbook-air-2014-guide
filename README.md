@@ -1,7 +1,5 @@
 # How to Install Linux Mint 22 on a 2014 MacBook Air – Step-by-Step Guide with Fixes for Wi-Fi, Camera & Trackpad (2026 Update)
 
-
-
 My old MacBook Air 11" (2014) running macOS Catalina was so slow that I finally decided to install Linux on its hard drive to make it a decent machine again.  
 
 I thought it would be easy and pretty well documented on the Web. It happens that there are some traps and that the documentation is scattered. This is a detailed report of my journey. I won't go in every details.
@@ -15,14 +13,14 @@ I thought it would be easy and pretty well documented on the Web. It happens tha
 3. Prepare the MacBook hard drive for dual-boot
 4. Boot on the USB drive
 5. Install Linux on the hard drive
-6. Boot the newly installed operating system 
+6. Boot the newly installed operating system
 7. Set up the Wifi connection
 8. Make the camera work
 9. (Optional) Customize appearance and behavior
 
 ## Step 1: Choose a suitable Linux distribution
 
-There are a lot of Linux distributions and most of them are suitable to install on an old macbook. I wanted a lightweight, well-known distribution that brings back performance to my old hardware. There are [many choices](https://mactel-linux.org/distributions/the-best-linux-distros-for-intel-macs-tested-in-2025/). I chose [**Linux Mint XFCE**](https://www.linuxmint.com) that is known for its stability and being light on resource usage. 
+There are a lot of Linux distributions and most of them are suitable to install on an old macbook. I wanted a lightweight, well-known distribution that brings back performance to my old hardware. There are [many choices](https://mactel-linux.org/distributions/the-best-linux-distros-for-intel-macs-tested-in-2025/). I chose [**Linux Mint XFCE**](https://www.linuxmint.com) that is known for its stability and being light on resource usage.
 
 On your main machine, go to the [Linux Mint download page](https://www.linuxmint.com/download.php) and download the XFCE Edition iso image. At the time of writing the current version is 22.3 and the iso image takes around 3 GB.
 
@@ -37,13 +35,13 @@ On your main machine, go to the [Linux Mint download page](https://www.linuxmint
 Although I wanted to use this MacBook Air only with Linux, I decided to stay on the safe side and make a dual-boot installation, so that rollback would be possible. I mad a fresh reinstall of macOS so that all the old data are erased, letting plenty of space for Linux.
 
 - Erase current data:
-    - Restart your MacBook by pressing the power button and holding down  ⌘ + R to activate Recovery Mode.
-    - In the first window, select *Reinstall macOS*. Follow the process of installation.
-    - When you first log in in the newly installed macOS, it will ask for installing updates and/or new version of macOS. Do that only if you plan to use macOS on this MacBook.
+  - Restart your MacBook by pressing the power button and holding down  ⌘ + R to activate Recovery Mode.
+  - In the first window, select *Reinstall macOS*. Follow the process of installation.
+  - When you first log in in the newly installed macOS, it will ask for installing updates and/or new version of macOS. Do that only if you plan to use macOS on this MacBook.
 - Create a partition for Linux:
-    - Restart your MacBook by pressing the power button and holding down  ⌘ + R to activate Recovery Mode.
-    - In the first window, select *Disk Utility*.
-    - With Disk Utility, resize the current APFS partition down to 50 GB and create a new exFAT partition for Linux (at least 30 GB).
+  - Restart your MacBook by pressing the power button and holding down  ⌘ + R to activate Recovery Mode.
+  - In the first window, select *Disk Utility*.
+  - With Disk Utility, resize the current APFS partition down to 50 GB and create a new exFAT partition for Linux (at least 30 GB).
 - Turn the MacBook off.
 
 **Note:** Many [tutorials](https://mactel-linux.org/installation/dual-boot-like-a-pro-macos-and-linux-on-a-macbook-pro-2012-2019/) suggest to install [the rEFInd Boot Manager](https://www.rodsbooks.com/refind/) to manage dual-boot. I did not install it and I don't miss it. The native Apple boot manager is enough for me.
@@ -52,14 +50,14 @@ Although I wanted to use this MacBook Air only with Linux, I decided to stay on 
 
 ## Step 4: Boot on the USB drive
 
-- Insert the USB stick into one of the MacBook USB ports. 
+- Insert the USB stick into one of the MacBook USB ports.
 - Restart your MacBook by pressing the power button and holding down the ```option/alt``` key. Double click on the USB stick icon (any of the yellow icons). The system should boot into the GRUB menu.
-    - Don’t try to connect to a wireless network, because it won’t work at this time of installation. 
+  - Don’t try to connect to a wireless network, because it won’t work at this time of installation.
 - **Here is the tricky part.** If you directly start Linux Mint, you won't be able to select the hard disk drive on which you would like to install Linux. You have to add a boot option.
-    - While in the main GRUB menu, press ```e``` to edit the commands before booting.
-    - In the line starting with ```linux```, add the option ```intel_iommu=off```, for instance between the ```quiet``` and ```splash``` options.
-    - Then press ```F10``` to boot.
-    - Check that the MacBook hard drive is detected : launch ```Applications > System > Gparted```- you should see your target partition. You can format this partition to use the ```ext4```file system which is the standard Linux file system.
+  - While in the main GRUB menu, press ```e``` to edit the commands before booting.
+  - In the line starting with ```linux```, add the option ```intel_iommu=off```, for instance between the ```quiet``` and ```splash``` options.
+  - Then press ```F10``` to boot.
+  - Check that the MacBook hard drive is detected : launch ```Applications > System > Gparted```- you should see your target partition. You can format this partition to use the ```ext4```file system which is the standard Linux file system.
 
 **Note: it's even a little trickier when your MacBook keyboard has a non-US layout.**
 
@@ -80,7 +78,7 @@ Although I wanted to use this MacBook Air only with Linux, I decided to stay on 
 
 At this stage, if you boot Linux on the hard drive, you get something like this:
 
-```
+```sh
 Gave up waiting for root device. Common problems:
 - Boot args (cat /proc/cmdline)
 - Check rootdelay= (did the system wait long enough?)
@@ -103,11 +101,15 @@ The MacBook does not boot up properly and instead of going to the login screen, 
 - Launch again ```gparted``` and note the name of the hard drive partition on which Linux has been installed. For instance: ```/dev/sda3```.
 - Start a terminal and mount the partition (adapt to the actual partition name).
 
-​	```sudo mount /dev/sda3 /mnt```
+```sh
+sudo mount /dev/sda3 /mnt
+```
 
 - [Edit the grub option file](https://askubuntu.com/questions/19486/how-do-i-add-a-kernel-boot-parameter) **on the hard drive**.
 
-  ```sudo nano /mnt/etc/default/grub```
+```sh
+sudo nano /mnt/etc/default/grub
+```
   
 - Update the ```GRUB_CMDLINE_LINUX_DEFAULT``` variable
 
@@ -117,23 +119,27 @@ The MacBook does not boot up properly and instead of going to the login screen, 
 
 - Apply the new options
 
-    ```sudo update-grub```
+```sh
+sudo update-grub
+```
 
 - Restart the MacBook. Remove the USB stick when prompted.
 
 This time, the MacBook boots up properly the Linux system on the hard drive. Celebrate.
 
-**Note:** if the MacBook has a non-US keyboard layout, you can specify the proper layout with the ```setkxkbmap``` command in a terminal before editing the grub option file. 
+**Note:** if the MacBook has a non-US keyboard layout, you can specify the proper layout with the ```setkxkbmap``` command in a terminal before editing the grub option file.
 
 For instance, [for a French Macintosh layout](https://commandmasters.com/commands/setxkbmap-linux/):
 
-```setxkbmap -layout fr -variant mac```
+```sh
+setxkbmap -layout fr -variant mac
+```
 
 ## Step 7: Set up the Wifi connection
 
 Ok, your MacBook runs Linux, but it is cut from the rest of the world. It is time to set up the Wifi.
 
-You need to install the driver for the built-in Broadcom wireless network card. 
+You need to install the driver for the built-in Broadcom wireless network card.
 
 - Click on the *Let’s go!* button in the window of the Welcome up that is open on your desktop.
 - Navigate to launch the *Driver Manager*.
@@ -142,7 +148,7 @@ You need to install the driver for the built-in Broadcom wireless network card.
 - Restart when prompted.
 - Once the MacBook is started again, you can log in and connect to the wifi network of your choice.
 
-**NOTE**: Depending on the exact model of your MacBook Air 2014,  ```broadcom-sta-dkms``` may not work. You can try ```bcmwl-kernel-source``` or ```b43-fwcutter + firmware-b43-installer ``` instead.
+**NOTE**: Depending on the exact model of your MacBook Air 2014,  ```broadcom-sta-dkms``` may not work. You can try ```bcmwl-kernel-source``` or ```b43-fwcutter + firmware-b43-installer``` instead.
 
 ## Step 8: Make the camera work
 
@@ -154,17 +160,21 @@ The detailed instructions are [here](https://github.com/patjak/facetimehd/wiki/I
 
 To test the installation, you have to install mplayer.
 
-```sudo apt install mplayer```
+```sh
+sudo apt install mplayer
+```
 
 And then you can run:
 
-```mplayer tv://``
+```sh
+mplayer tv://
+```
 
 The camera works.
 
 **Note:** There is also a simpler method with **facetimehd-dkms**.
 
-```
+```sh
 sudo apt update
 sudo apt install facetimehd-dkms facetimehd-firmware
 sudo modprobe facetimehd
@@ -201,15 +211,15 @@ sudo apt install fonts-inter fonts-jetbrains-mono
 
 - Move the theme from a user directory to a shared directory, so that more applications apply the theme (for instance: terminal)
 
-```bash
+```sh
 sudo mv ~/.themes/* /usr/share/themes
 ```
 
 - Launch ```Applications > Parameters > Appearence```
 - Select:
-    - Style: *WhiteSur-Light*
-    - Icons: *WhiteSur-light*
-    - Fonts: Default *Inter Display Regular*, Monospace *JetBrains Mono Regular*
+  - Style: *WhiteSur-Light*
+  - Icons: *WhiteSur-light*
+  - Fonts: Default *Inter Display Regular*, Monospace *JetBrains Mono Regular*
 
 Some authors suggest to install ```plank``` to have a dock-like experience. I do not like it and I stay with the taskbar.
 
@@ -221,26 +231,30 @@ I suggest you test the default *libinput* driver first. Switch to *synaptics* *o
 
 - To know which driver is used by your input devices, run the following command:
 
-​	```grep -i "Using input driver" /var/log/Xorg.0.log```
+```sh
+grep -i "Using input driver" /var/log/Xorg.0.log
+```
 
-​	When both drivers are installed, *synaptics* takes priority.
+​  When both drivers are installed, *synaptics* takes priority.
 
 - To install the *synaptics* driver:
 
-​	```apt install xserver-xorg-input-synaptics```
+```sh
+apt install xserver-xorg-input-synaptics
+```
 
-​	Then log out and log back in.
+​  Then log out and log back in.
 
 - Configure the desired behavior:
 
-```
+```sh
 sudo mkdir -p /etc/X11/xorg.conf.d
 sudo nano /etc/X11/xorg.conf.d/70-synaptics.conf
 ```
 
 Insert these lines (adapt to your needs):
 
-```
+```text
 Section "InputClass"
     Identifier "Apple Trackpad"
     MatchProduct "bcm5974"
