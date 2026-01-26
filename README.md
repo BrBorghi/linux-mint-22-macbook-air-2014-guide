@@ -2,9 +2,11 @@
 
 
 
-My old MacBook Air 11" (2014) running macOS Catalina was so slow that I finally decided to install Linux on its hard drive to make it a decent machine again. This is a detailed report of this journey. 
+My old MacBook Air 11" (2014) running macOS Catalina was so slow that I finally decided to install Linux on its hard drive to make it a decent machine again.  
 
-I thought it would be easy and pretty well documented on the Web. It happens that there are some traps and that the documentation is scattered. I won't go in every details
+I thought it would be easy and pretty well documented on the Web. It happens that there are some traps and that the documentation is scattered. This is a detailed report of my journey. I won't go in every details.
+
+![Linux Mint 22.3 on my 2014 MacBook Air](Mint_22.3_on_2014_MacBook_Air.jpg)
 
 ## Linux Installation: Overview
 
