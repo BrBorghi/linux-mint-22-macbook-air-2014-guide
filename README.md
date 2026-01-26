@@ -215,9 +215,9 @@ Some authors suggest to install ```plank``` to have a dock-like experience. I do
 
 ### Trackpad
 
-The default touchpad driver *libinput*. For more control over the click zone on the trackpad, you can switch to *synaptics*.
+The default touchpad driver is *libinput*. For more control over the click zone on the trackpad, you can switch to *synaptics*.
 
-In 2026, test the default libinput driver first. Switch to synaptics only if multitouch or click zones feel off.
+I suggest you test the default *libinput* driver first. Switch to *synaptics* *only if multitouch or click zones feel off.
 
 - To know which driver is used by your input devices, run the following command:
 
@@ -265,6 +265,6 @@ EndSection
 
 The keyboard backlight is already enabled in the standard distribution. You can adjust the brightness or turn it off by using the ```F5``` and ```F6``` keys.
 
-## Bonus: Visual Code editor
+## Bonus: Visual Studio Code editor
 
 To install VSCode on Linux Mint, follow [these instructions](https://linuxcapable.com/how-to-install-vscode-on-linux-mint/#google_vignette), using *Method 1: Install Visual Studio Code via Microsoft APT Repository*. I find these instructions clearer than [the official documentation](https://code.visualstudio.com/docs/setup/linux#_debian-ubuntu).
