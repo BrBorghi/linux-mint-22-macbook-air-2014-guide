@@ -274,6 +274,32 @@ Section "InputClass"
     Option "LockedDrags" "off"
 EndSection
 ```
+### Keyboard
+
+There are some useful characters not directly available on the French keyboard in its Macintosh variant. For instance, with macOS, to type a left bracket "[", the key combination is ```Command``` + ```Shift``` + ```(```. It does not work in Linux Mint and it took me some time to understand how to type a left bracket.
+
+In Linux, there are *chooser keys*. ```Shift``` is the second level input modifier key (2nd level chooser key). By default, the  third level input modifier key (3rd level chooser) is the ```AltGr``` (like in Windows). On a MacBook keyboard, it is the **right ```Alt``` key**. So to get a left bracket, the key combination is **right ```Alt```** + ```Shift``` + ```(```. To get a left brace "{", the key combination is **right ```Alt```** + ```(```. 
+
+You can set the 3rd level chooser key that you prefer with the 
+```setxkbmap``` command. For instance, to set the **left ```Command```** key as the 3rd level chooser key, run:
+
+```sh
+setxkbmap -option lv3:lwin_switch
+```
+
+However, this change is made only for the current session. To make this change permanent, you can edit the ```/etc/default/keyboard``` file and modify the line setting XKBOPTIONS.
+
+```sh
+XKBOPTIONS="lv3:lwin_switch"
+```
+
+To know the active options of your keyboard, run:
+```sh
+setxkbmap -query
+```
+
+The list of all the available opions is in the file ```/usr/share/X11/xkb/rules/evdev.lst```.
+
 
 ### Backlit keyboard
 
