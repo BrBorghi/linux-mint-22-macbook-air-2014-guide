@@ -15,8 +15,9 @@ I thought it would be easy and pretty well documented on the Web. It happens tha
 5. Install Linux on the hard drive
 6. Boot the newly installed operating system
 7. Set up the Wifi connection
-8. Make the camera work
-9. (Optional) Customize appearance and behavior
+8. Fix the keyboard
+9. Make the camera work
+10. (Optional) Customize appearance and behavior
 
 ## Step 1: Choose a suitable Linux distribution
 
@@ -35,33 +36,33 @@ On your main machine, go to the [Linux Mint download page](https://www.linuxmint
 Although I wanted to use this MacBook Air only with Linux, I decided to stay on the safe side and make a dual-boot installation, so that rollback would be possible. I mad a fresh reinstall of macOS so that all the old data are erased, letting plenty of space for Linux.
 
 - Erase current data:
-  - Restart your MacBook by pressing the power button and holding down  ⌘ + R to activate Recovery Mode.
+  - Restart your MacBook by pressing the power button and holding down  <kbd>⌘</kbd> + <kbd>R</kbd> to activate Recovery Mode.
   - In the first window, select *Reinstall macOS*. Follow the process of installation.
   - When you first log in in the newly installed macOS, it will ask for installing updates and/or new version of macOS. Do that only if you plan to use macOS on this MacBook.
 - Create a partition for Linux:
-  - Restart your MacBook by pressing the power button and holding down  ⌘ + R to activate Recovery Mode.
+  - Restart your MacBook by pressing the power button and holding down  <kbd>⌘</kbd> + <kbd>R</kbd> to activate Recovery Mode.
   - In the first window, select *Disk Utility*.
-  - With Disk Utility, resize the current APFS partition down to 50 GB and create a new exFAT partition for Linux (at least 30 GB).
+  - With Disk Utility, resize the current APFS partition down to 50 GB and create a new exFAT partition for Linux (at least 30 GB) - the Linux installation will make it an ext4 partition later.
 - Turn the MacBook off.
 
 **Note:** Many [tutorials](https://mactel-linux.org/installation/dual-boot-like-a-pro-macos-and-linux-on-a-macbook-pro-2012-2019/) suggest to install [the rEFInd Boot Manager](https://www.rodsbooks.com/refind/) to manage dual-boot. I did not install it and I don't miss it. The native Apple boot manager is enough for me.
 
-**Note:** If your Mac is still on HFS+ (pre-High Sierra), you'll may have toconvert to APFS first via Disk Utility before resizing.
+**Note:** If your Mac is still on HFS+ (pre-High Sierra), some sources say that you'll may have to convert to APFS first via Disk Utility before resizing.
 
 ## Step 4: Boot on the USB drive
 
 - Insert the USB stick into one of the MacBook USB ports.
-- Restart your MacBook by pressing the power button and holding down the ```option/alt``` key. Double click on the USB stick icon (any of the yellow icons). The system should boot into the GRUB menu.
+- Restart your MacBook by pressing the power button and holding down the <kbd>option/alt</kbd> key. Double click on the USB stick icon (any of the yellow icons). The system should boot into the GRUB menu.
   - Don’t try to connect to a wireless network, because it won’t work at this time of installation.
 - **Here is the tricky part.** If you directly start Linux Mint, you won't be able to select the hard disk drive on which you would like to install Linux. You have to add a boot option.
-  - While in the main GRUB menu, press ```e``` to edit the commands before booting.
+  - While in the main GRUB menu, press <kbd>e</kbd> to edit the commands before booting.
   - In the line starting with ```linux```, add the option ```intel_iommu=off```, for instance between the ```quiet``` and ```splash``` options.
-  - Then press ```F10``` to boot.
+  - Then press <kbd>F10</kbd> to boot.
   - Check that the MacBook hard drive is detected : launch ```Applications > System > Gparted```- you should see your target partition. You can format this partition to use the ```ext4```file system which is the standard Linux file system.
 
 **Note: it's even a little trickier when your MacBook keyboard has a non-US layout.**
 
-- In my case, my MacBook has a French Macintosh layout. That means that when editing the Grub options, for instance, if I hit the ```_``` key, it enters ```+```. So to enter correctly the option ```intel_iommu=off```, I had to type ```intel°io,,u-off```.
+- In my case, my MacBook has a French Macintosh layout. That means that when editing the Grub options, for instance, if I hit the <kbd>_</kbd> key, it enters ```+```. So to enter correctly the option ```intel_iommu=off```, I had to type ```intel°io,,u-off```.
 
 - Here is the standard QWERTY layout, so that you can easily map the keys if your MacBook has a non-US keyboard..
 
@@ -150,7 +151,54 @@ You need to install the driver for the built-in Broadcom wireless network card.
 
 **NOTE**: Depending on the exact model of your MacBook Air 2014,  ```broadcom-sta-dkms``` may not work. You can try ```bcmwl-kernel-source``` or ```b43-fwcutter + firmware-b43-installer``` instead.
 
-## Step 8: Make the camera work
+## Step 8: Fix the keyboard
+
+### Fix the inversion of the <kbd>@ #</kbd> and <kbd>< ></kbd> keys
+After the fresh install of Linux Mint, when I want to type "@", I obtain "<" and vice-versa. Idem when typing "#", I obtain ">" and vice-vera. Not  a big deal, but still an annoyance. This inversion is a common problem with French Apple keyboards on Linux, due to incorrect ANSI/ISO detection. 
+
+To fix it, you need to configure the options of the `hid_apple` kernel module, which manages Apple keyboards on Linux. The `/etc/modprobe.d/` directory is used to load module options at startup.
+
+Run:
+```sh
+sudo echo "options hid_apple iso_layout=1" >> /etc/modprobe.d/hid_apple.conf
+sudo update-initramfs -u -k all
+sudo reboot
+```
+
+Runnnig `update-initramfs` regenerates the `initramfs` file that is used by the boot process. This update ensures persistence. Without this step, the changes in `/etc/modprobe.d/` do not apply at the very beginning of boot, which appears to be especially important for a MacBook's built-in keyboard. And you need to reboot fot the changes to apply.
+
+### Backlit keyboard
+
+The keyboard backlight is already enabled in the standard distribution. You can adjust the brightness or turn it on and off by using the <kbd>F5</kbd> and <kbd>F6</kbd> keys.
+
+### Third level chooser key
+
+There are some useful characters not directly available on the French keyboard in its Macintosh variant. With macOS, to type a left bracket "[", the key combination is <kbd>Command</kbd> + <kbd>Shift</kbd> + <kbd>(</kbd>. It does not work in Linux Mint and it took me some time to understand how to type a left bracket.
+
+In Linux, <kbd>Shift</kbd> is the second level input modifier key (2nd level chooser key). By default, the  third level input modifier key (3rd level chooser) is  <kbd>AltGr</kbd> (same as Windows). On a MacBook keyboard, <kbd>AltGr</kbd> is the **right** <kbd>Alt</kbd> key. So to get a left bracket, the key combination is **right** <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>(</kbd>. To get a left brace "{", the key combination is **right** <kbd>Alt</kbd> + <kbd>(</kbd>. 
+
+As an habitual macOS user, I have muscle memory and I wanted a more mac-like experience. Then I customized the 3rd level chooser key to be **left** <kbd>Command</kbd>:
+
+```sh
+setxkbmap -option lv3:lwin_switch
+```
+
+To make this change permanent, you need to edit the ```/etc/default/keyboard``` file, modify the line setting XKBOPTIONS, then reboot:
+
+```sh
+XKBOPTIONS="lv3:lwin_switch"
+```
+
+To know the current active active options of your keyboard, run:
+```sh
+setxkbmap -query
+```
+
+The list of all the available opions is in the file ```/usr/share/X11/xkb/rules/evdev.lst```.
+
+
+
+## Step 9: Make the camera work
 
 You're almost done. If you plan to use your MacBook for videoconferencing, there is one step left : enable the camera.
 
@@ -172,7 +220,7 @@ mplayer tv://
 
 The camera works.
 
-**Note:** There is also a simpler method with **facetimehd-dkms**.
+**Note:** There seems to be a simpler method with **facetimehd-dkms**.
 
 ```sh
 sudo apt update
@@ -180,7 +228,7 @@ sudo apt install facetimehd-dkms facetimehd-firmware
 sudo modprobe facetimehd
 ```
 
-## Step 9 (optional): Customize appearance and behavior
+## Step 10 (optional): Customize appearance and behavior
 
 ### Theme
 
@@ -274,37 +322,3 @@ Section "InputClass"
     Option "LockedDrags" "off"
 EndSection
 ```
-### Keyboard
-
-There are some useful characters not directly available on the French keyboard in its Macintosh variant. For instance, with macOS, to type a left bracket "[", the key combination is ```Command``` + ```Shift``` + ```(```. It does not work in Linux Mint and it took me some time to understand how to type a left bracket.
-
-In Linux, there are *chooser keys*. ```Shift``` is the second level input modifier key (2nd level chooser key). By default, the  third level input modifier key (3rd level chooser) is the ```AltGr``` (like in Windows). On a MacBook keyboard, it is the **right ```Alt``` key**. So to get a left bracket, the key combination is **right ```Alt```** + ```Shift``` + ```(```. To get a left brace "{", the key combination is **right ```Alt```** + ```(```. 
-
-You can set the 3rd level chooser key that you prefer with the 
-```setxkbmap``` command. For instance, to set the **left ```Command```** key as the 3rd level chooser key, run:
-
-```sh
-setxkbmap -option lv3:lwin_switch
-```
-
-However, this change is made only for the current session. To make this change permanent, you can edit the ```/etc/default/keyboard``` file and modify the line setting XKBOPTIONS.
-
-```sh
-XKBOPTIONS="lv3:lwin_switch"
-```
-
-To know the active options of your keyboard, run:
-```sh
-setxkbmap -query
-```
-
-The list of all the available opions is in the file ```/usr/share/X11/xkb/rules/evdev.lst```.
-
-
-### Backlit keyboard
-
-The keyboard backlight is already enabled in the standard distribution. You can adjust the brightness or turn it off by using the ```F5``` and ```F6``` keys.
-
-## Bonus: Visual Studio Code editor
-
-To install VSCode on Linux Mint, follow [these instructions](https://linuxcapable.com/how-to-install-vscode-on-linux-mint/#google_vignette), using *Method 1: Install Visual Studio Code via Microsoft APT Repository*. I find these instructions clearer than [the official documentation](https://code.visualstudio.com/docs/setup/linux#_debian-ubuntu).
