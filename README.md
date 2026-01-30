@@ -165,7 +165,7 @@ sudo update-initramfs -u -k all
 sudo reboot
 ```
 
-Runnnig `update-initramfs` regenerates the `initramfs` file that is used by the boot process. This update ensures persistence. Without this step, the changes in `/etc/modprobe.d/` do not apply at the very beginning of boot, which appears to be especially important for a MacBook's built-in keyboard. And you need to reboot fot the changes to apply.
+Runnnig `update-initramfs` regenerates the `initramfs` file that is used by the boot process. This update ensures persistence. Without this step, the changes in `/etc/modprobe.d/` do not apply at the very beginning of boot, which appears to be especially important for a MacBook's built-in keyboard. And you need to reboot for the changes to apply.
 
 ### Backlit keyboard
 
