@@ -275,7 +275,7 @@ Some authors suggest to install ```plank``` to have a dock-like experience. I do
 
 The default touchpad driver is *libinput*. For more control over the click zone on the trackpad, you can switch to *synaptics*.
 
-I suggest you test the default *libinput* driver first. Switch to *synaptics* *only if multitouch or click zones feel off.
+I suggest you test the default *libinput* driver first. Switch to *synaptics* only if multitouch or click zones feel off.
 
 - To know which driver is used by your input devices, run the following command:
 
