@@ -18,6 +18,7 @@ I thought it would be easy and pretty well documented on the Web. It happens tha
 8. Fix the keyboard
 9. Make the camera work
 10. (Optional) Customize appearance and behavior
+11. (Optional) Connect Airpods
 
 ## Step 1: Choose a suitable Linux distribution
 
@@ -322,3 +323,36 @@ Section "InputClass"
     Option "LockedDrags" "off"
 EndSection
 ```
+
+## Step 11 (optional): Connect Airpods
+
+Airpods are part of the Apple eco-system. If you have a MacBook, chances are you have Airpods.
+To connect Airpods, I followed [Aidos' tutorial](https://gist.github.com/aidos-dev/b49078c1d8c6bb1621e4ac199d18213b), that I sum up here.
+
+- Edit the `/etc/bluetooth/main.conf` file (using sudo)
+- Change the line:
+
+```sh
+#ControllerMode = dual
+```
+
+to:
+
+```sh
+ControllerMode = bredr
+```
+
+- Restart the bluetooth service:
+```sh
+sudo /etc/init.d/bluetooth restart
+```
+
+To pair the Airpods, make sure that bluetooth is enabled. Then,
+
+- Put your airpods (both) inside the case
+
+- Keep the cover opened
+
+- With cover opened and airpods inside the case, press and hold the button on the back of the airpods case, until you see the light blinking on the front side of the case
+
+- Find your AirPods on Bluetooth settings section and connect them.
