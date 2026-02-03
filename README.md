@@ -100,6 +100,7 @@ The MacBook does not boot up properly and instead of going to the login screen, 
 **Here is the second tricky part:**  you need to edit the Grub options, otherwise the hard drive is not detected.
 
 - For that, you need to boot again on the USB stick.
+
 - Launch again ```gparted``` and note the name of the hard drive partition on which Linux has been installed. For instance: ```/dev/sda3```.
 - Start a terminal and mount the partition (adapt to the actual partition name).
 
@@ -135,6 +136,11 @@ For instance, [for a French Macintosh layout](https://commandmasters.com/command
 
 ```sh
 setxkbmap -layout fr -variant mac
+```
+
+As your keyboard physical layout is actually French Macintosh you need to actually type:
+```sh
+setxkb,qp )lqyout fr )vqriqnt ,qc
 ```
 
 ## Step 7: Set up the Wifi connection
